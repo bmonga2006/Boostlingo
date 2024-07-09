@@ -36,13 +36,15 @@ namespace BoostLingo.Tests
             Configuration = new ConfigurationBuilder()
                                 .AddInMemoryCollection(inMemorySettings)
                                 .Build();
-
             PersonRepository = new PersonRepository(PersonContext, Configuration, MockLogger.Object);
+
         }
 
         [TearDown]
         public void TearDown()
         {
+            //Make sure context is refreshed after each test so that data is not accumulated between tests
+            PersonContext.Database.EnsureDeleted();
             PersonContext.Dispose();
         }
 
@@ -50,29 +52,33 @@ namespace BoostLingo.Tests
         public async Task AddPersonsAsync_ValidData_AddsPersonsToDatabase()
         {
             // Arrange
+           
             var persons = new List<Person>
-        {
-            new Person
             {
-                UniqueId = "5ZVOEPMJUI4MB4EN",
-                FirstName = "John",
-                LastName = "Doe",
-                Language = "English",
-                Version = 1.0,
-                PersonBio = new PersonBio { BioText = "Test bio" }
-            }
-        };
+                new Person
+                {
+                    UniqueId = "5ZVOEPMJUI4MB4EN",
+                    FirstName = "John",
+                    LastName = "Doe",
+                    Language = "English",
+                    Version = 1.0,
+                    PersonBio = new PersonBio { BioText = "Test bio" }
+                }
+             };
 
             // Act
             await PersonRepository.AddPersonsAsync(persons);
 
             // Assert
             var addedPersons = PersonContext.Persons.Include(p => p.PersonBio).ToList();
-            Assert.That(addedPersons.Count, Is.EqualTo(1));
-            Assert.That(addedPersons[0].FirstName, Is.EqualTo("John"));
-            Assert.That(addedPersons[0].LastName, Is.EqualTo("Doe"));
-            Assert.IsNotNull(addedPersons[0].PersonBio);
-            Assert.That(addedPersons[0].PersonBio.BioText, Is.EqualTo("Test bio"));
+            Assert.Multiple(() =>
+            {
+                Assert.That(addedPersons.Count, Is.EqualTo(1));
+                Assert.That(addedPersons[0].FirstName, Is.EqualTo("John"));
+                Assert.That(addedPersons[0].LastName, Is.EqualTo("Doe"));
+                Assert.IsNotNull(addedPersons[0].PersonBio);
+                Assert.That(addedPersons[0].PersonBio.BioText, Is.EqualTo("Test bio"));
+            });
         }
 
         [Test]
