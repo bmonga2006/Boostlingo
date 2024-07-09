@@ -1,4 +1,4 @@
-IF NOT EXISTS (Select name From master.dbo.sysdatabases WHERE name = N'Person')
+IF NOT EXISTS (SELECT name From master.dbo.sysdatabases WHERE name = N'Person')
 BEGIN
 	CREATE DATABASE Person
 END
@@ -15,7 +15,7 @@ BEGIN
 		LastName NVARCHAR(100),
 		Language NVARCHAR(50),
 		Version FLOAT,
-		DateCreated DATETIME not NULL Default Getdate(),
+		DateCreated DATETIME NOT NULL Default Getdate(),
 	)
 END
 GO
@@ -26,13 +26,13 @@ BEGIN
 		PersonBioId INT IDENTITY(1,1) PRIMARY KEY,
 		PersonId INT,
 		BioText NVARCHAR(MAX),
-		DateCreated DATETIME not NULL Default Getdate(),
+		DateCreated DATETIME NOT NULL Default Getdate(),
 		FOREIGN KEY (PersonId) REFERENCES Persons(PersonId)
 	);
 END
 GO 
 
-IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_LastName' AND object_id = OBJECT_ID(N'Persons'))
+IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_LastName' AND OBJECT_ID = OBJECT_ID(N'Persons'))
 BEGIN
 	CREATE NONCLUSTERED INDEX [IX_Person_LastName] ON [dbo].[Persons]
 	(
@@ -42,7 +42,7 @@ BEGIN
 END
 GO
 
-IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_FirstName' AND object_id = OBJECT_ID(N'Persons'))
+IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_FirstName' AND OBJECT_ID = OBJECT_ID(N'Persons'))
 BEGIN
 	CREATE NONCLUSTERED INDEX [IX_Person_FirstName] ON [dbo].[Persons]
 	(
