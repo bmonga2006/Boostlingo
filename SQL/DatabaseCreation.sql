@@ -6,41 +6,49 @@ GO
 
 USE [Person]
 
-CREATE TABLE dbo.Persons (
-    PersonId INT IDENTITY(1,1) PRIMARY KEY,
-    UniqueId NVARCHAR(50) UNIQUE,
-    FirstName NVARCHAR(100),
-    LastName NVARCHAR(100),
-    Language NVARCHAR(50),
-    Version FLOAT,
-	DateCreated DATETIME not NULL Default Getdate(),
-)
-
+IF NOT EXISTS (SELECT 1 FROM sys.Objects WHERE Object_id = OBJECT_ID(N'Persons'))
+BEGIN
+	CREATE TABLE dbo.Persons (
+		PersonId INT IDENTITY(1,1) PRIMARY KEY,
+		UniqueId NVARCHAR(50) UNIQUE,
+		FirstName NVARCHAR(100),
+		LastName NVARCHAR(100),
+		Language NVARCHAR(50),
+		Version FLOAT,
+		DateCreated DATETIME not NULL Default Getdate(),
+	)
+END
 GO
 
-CREATE TABLE dbo.PersonBios (
-    PersonBioId INT IDENTITY(1,1) PRIMARY KEY,
-    PersonId INT,
-    BioText NVARCHAR(MAX),
-	DateCreated DATETIME not NULL Default Getdate(),
-    FOREIGN KEY (PersonId) REFERENCES Persons(PersonId)
-);
-
+IF NOT  EXISTS (SELECT 1 FROM sys.Objects WHERE Object_id = OBJECT_ID(N'PersonBios'))
+BEGIN
+	CREATE TABLE dbo.PersonBios (
+		PersonBioId INT IDENTITY(1,1) PRIMARY KEY,
+		PersonId INT,
+		BioText NVARCHAR(MAX),
+		DateCreated DATETIME not NULL Default Getdate(),
+		FOREIGN KEY (PersonId) REFERENCES Persons(PersonId)
+	);
+END
 GO 
 
-CREATE NONCLUSTERED INDEX [IX_Person_FirstName] ON [dbo].[Persons]
-(
-	[FirstName] Desc
-)
-INCLUDE([UniqueId],[Language],[Version])
+IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_LastName' AND object_id = OBJECT_ID(N'Persons'))
+BEGIN
+	CREATE NONCLUSTERED INDEX [IX_Person_LastName] ON [dbo].[Persons]
+	(
+		[LastName]
+	)
+	INCLUDE([UniqueId],[Language],[Version])
+END
 GO
 
--- Create index on LastName
-CREATE NONCLUSTERED INDEX [IX_Person_LastName] ON [dbo].[Persons]
-(
-	[LastName] Desc
-)
-INCLUDE([UniqueId],[Language],[Version])
+IF NOT  EXISTS (SELECT 1 FROM sys.indexes  WHERE name='IX_Person_FirstName' AND object_id = OBJECT_ID(N'Persons'))
+BEGIN
+	CREATE NONCLUSTERED INDEX [IX_Person_FirstName] ON [dbo].[Persons]
+	(
+		[FirstName]
+	)
+	INCLUDE([UniqueId],[Language],[Version])
+END
 GO
-
 
