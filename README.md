@@ -18,4 +18,10 @@ In the SeriLog section of the appsettings.json file, update the file path to an 
 Run the Application:
 Start the application.
 
+Further Optimizations
+Further optimizations could be achieved by creating indexes after data insertion. However, since this was a small dataset, I did not implement these optimizations. This approach would be beneficial when handling larger datasets.
+
+Unit Test
+The tests in this application are sample tests and do not guarantee maximum coverage.
+
 
