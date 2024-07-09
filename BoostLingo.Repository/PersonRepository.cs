@@ -55,7 +55,7 @@ namespace BoostLingo.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error: {ex.Message}");
+                Logger.LogError($"Unexpected error: {ex.Message}");
                 throw;
             }
         }
@@ -75,7 +75,7 @@ namespace BoostLingo.Repository
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error while getting sorted persons from database: {ex.Message}");
+                Logger.LogCritical($"Unexpected error while getting sorted persons from database: {ex.Message}");
                 throw;
             }
        }

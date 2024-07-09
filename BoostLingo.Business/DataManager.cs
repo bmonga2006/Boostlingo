@@ -37,7 +37,7 @@ namespace BoostLingo.Business
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Unexpected error: {ex.Message}");
+               Logger.LogCritical($"Unexpected error: {ex.Message}");
                 throw;
             }
 

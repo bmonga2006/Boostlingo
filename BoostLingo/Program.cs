@@ -23,7 +23,7 @@ namespace BoostLingo
 
             try
             {
-                Console.WriteLine($"");
+                Console.WriteLine($"Starting the process");
                 List<Person> persons = await dataManager.FetchDataAsync();
                 if(persons != null && persons.Any())
                 {
