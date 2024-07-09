@@ -88,7 +88,7 @@ namespace BoostLingo.Tests
             var persons = new List<Person>
         {
             new Person { UniqueId = "ENTOCR13RSCLZ6KU", FirstName = "John", LastName = "Doe", Language = "English", Version = 1.0 },
-             new Person { UniqueId = "V59OF92YF627HFY0", FirstName = "Jane", LastName = "Doe", Language = "English", Version = 1.0 },
+            new Person { UniqueId = "V59OF92YF627HFY0", FirstName = "Jane", LastName = "Doe", Language = "English", Version = 1.0 },
             new Person { UniqueId = "5ZVOEPMJUI4MB4EN", FirstName = "Jane", LastName = "Smith", Language = "English", Version = 1.0 }
         };
 
